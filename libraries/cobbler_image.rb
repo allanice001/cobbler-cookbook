@@ -17,8 +17,6 @@ class Chef
     attribute(:checksum, kind_of: String)
     attribute(:os_version, kind_of: String)
     attribute(:os_arch, kind_of: String, default: 'x86_64')
-    attribute(:os_kickstart, kind_of: String)
-    attribute(:os_kickstart_options, kind_of: String, default: lazy { 'interface=auto' })
     attribute(:os_breed, kind_of: String)
 
     private
@@ -37,7 +35,6 @@ class Chef
         notifying_block do
           create_image
           cobbler_import
-          cobbler_profile_add
           delete_image
         end
       end
@@ -51,18 +48,7 @@ class Chef
         source new_resource.source
         checksum new_resource.checksum
         action :create_if_missing
-      end
-    end
-
-    def cobbler_profile_add
-      bash 'cobbler-profile-add' do
-        code (<<-CODE)
-cobbler profile add --name='#{new_resource.profile}' \
- --path='#{new_resource.name}' \
- --kickstart=#{new_resource.os_kickstart}
-cobbler sync
-CODE
-        not_if "cobbler profile list |grep #{new_resource.profile}"
+        not_if "cobbler image list --name='#{new_resource.name}'"
       end
     end
 
@@ -80,7 +66,7 @@ cobbler import --name='#{new_resource.name}' \
 umount /mnt
 cobbler sync
         CODE
-        not_if "cobbler profile list |grep #{new_resource.name}"
+        not_if "cobbler distro list --name='#{new_resource.name}'"
       end
 
       # Delete the cached image (see #download_image) from the guest system.
