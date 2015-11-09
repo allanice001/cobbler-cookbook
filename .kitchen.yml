@@ -7,9 +7,9 @@ provisioner:
 
 platforms:
   - name: ubuntu-12.04
+  - name: ubuntu-14.04
     run_list:
       - 'recipe[apt::default]'
-  - name: ubuntu-14.04
   - name: centos-6.5
   - name: centos-5.10
     attributes:
@@ -18,8 +18,13 @@ platforms:
           - cobbler
 
 suites:
-  - name: default
+  - name: source_build
     run_list:
+      - 'recipe[cobblerd::source]'
+      - 'recipe[cobblerd::default]'
+  - name: package_install
+    run_list:
+      - 'recipe[cobblerd::package]'
       - 'recipe[cobblerd::default]'
   - name: images
     run_list:
