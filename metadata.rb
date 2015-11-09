@@ -1,10 +1,10 @@
 name             'cobblerd'
-maintainer       'John Bellone'
-maintainer_email 'jbellone@bloomberg.net'
+maintainer       'Compute Architecture Group'
+maintainer_email 'compute@bloomberg.net'
 license          'Apache 2.0'
 description      'Installs/Configures cobblerd'
 long_description 'Installs/Configures cobblerd'
-version          '0.3.0'
+version          '0.4.0'
 
 %w(centos redhat).each do |name|
   supports name, '~> 6.5'
