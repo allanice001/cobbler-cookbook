@@ -5,7 +5,7 @@
 # Copyright (C) 2015 Bloomberg Finance L.P.
 #
 
-service 'cobbler' do
+service node['cobbler']['service_name'] do
   action [:enable, :start]
   supports restart: true
 end

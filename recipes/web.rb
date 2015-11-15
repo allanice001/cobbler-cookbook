@@ -12,8 +12,6 @@ if node[:platform_family] == 'rhel'
   include_recipe 'yum-epel::default'
 end
 
-package 'cobbler-web'
-
 # Write out a password digest file for the cobbler web user. It would
 # normally use the `htdigest` command but luckily Ruby has it built in.
 ruby_block 'Write /etc/cobbler/users.digest' do
@@ -23,5 +21,5 @@ ruby_block 'Write /etc/cobbler/users.digest' do
     file.set_passwd 'Cobbler', node[:cobbler][:web_username], node[:cobbler][:web_password]
     file.flush
   end
-  notifies :restart, 'service[cobbler]', :delayed
+  notifies :restart, "service[#{node['cobbler']['service_name']}]", :delayed
 end
