@@ -21,5 +21,5 @@ ruby_block 'Write /etc/cobbler/users.digest' do
     file.set_passwd 'Cobbler', node[:cobbler][:web_username], node[:cobbler][:web_password]
     file.flush
   end
-  notifies :restart, "service[#{node['cobbler']['service_name']}]", :delayed
+  notifies :restart, "service[#{node['cobbler']['service']['name']}]", :delayed
 end
